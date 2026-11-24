@@ -1,0 +1,724 @@
+School Management System – PRD, TRD aur Flow Design
+Version: 1.0 (Draft, aapki manzoori ke liye) | Date: 23 November 2026 | Type: Frontend-only demo (dummy data)
+1. Project ka Khulasa
+Ye ek web app hai jo school owner / principal ke liye banayi ja rahi hai. Is mein bachon ka record, fee, teachers ki salary, kharche aur simple stock ek hi jagah manage hota hai. Fee baqi walon ko call aur WhatsApp reminder bhi yahin se hoga.
+Is phase ki sab se zaroori baat: ye abhi sirf Frontend hai. Backend aur database nahi hoga. Saari API mock (dummy) hongi jo frontend ke andar chalti hain, taake client ko poora system chalta hua nazar aaye. Baad mein asli backend aur database lagana chahein to mock API ki jagah asli API jor di jaye, pages ko badalna nahi parega.
+Demo Banner (har page ke upar)
+Har page ke sab se upar ek banner hoga, Roman Urdu mein:
+"Ye system school principal ke liye bahut useful hai. Yahan aap apna kharcha waghera likh sakte hain. Agar aap koi aur item ya feature add karwana chahein to humein bata dein, hum add kar denge."
+• Banner par chhota sa X (band) ka button hoga; band karne par session ke liye hide ho jayega, dobara page reload par phir aa jayega.
+• Ye banner demo ke liye hai, final product mein ek config switch se hata sakte hain.
+2. Scope (Kya hoga, kya nahi hoga)
+2.1 Is system mein ye hoga
+1.  Login: username, email aur password. Login ke baad upar user ka naam nazar aayega.
+2.  Dashboard: kitne bache hain, kitne active/inactive, class wise kitne, fee kitni aayi aur kitni baqi, kitne teachers ko salary di aur kitno ko nahi, is mahine ka kharcha.
+3.  Students aur Classes: Montessori se 10th tak class wise list. Naam, father ka naam, phone, family number, admission ki date, B-Form. Fee baqi ho to ghar call karne ka button.
+4.  Fees: monthly voucher khud ban jaye, late fee, maafi, receipt, defaulters ki list.
+5.  Teachers aur Salary: teacher ka record, kis ko kitni salary deni hai, kis ko de di aur kis ko nahi, salary slip.
+6.  Kharche (Expenses): bijli, kiraya, stationery waghera. Owner khud kuch bhi add kar sake, kis ko kitna diya, aur monthly report.
+7.  Stock: library ki kitabein, uniform waghera. Simple: kitna hai aur naya add karna. Khareed ka kharcha Kharche wale section mein hi likha jayega.
+8.  WhatsApp message: fee reminder bhejne ke liye.
+9.  Settings (chhota sa, zaroori): fee structure (class wise fee), due date, late fee rule, WhatsApp message ka template. Iske baghair voucher aur late fee ka hisaab nahi ban sakta, is liye ye shamil kiya hai.
+2.2 Phone numbers ke baare mein (aapki baat ka matlab)
+Sab bachon ke phone / WhatsApp numbers system mein save honge (koi bhi number likha ja sakta hai). Jis bache ke saath bhi kuch karna ho (fee ka kehna ho, tabiyat poochni ho, koi aur baat ho), uska number utha kar seedha Call ya WhatsApp kiya ja sakta hai. Har student ki row mein ye dono buttons hongay.
+2.3 Ye nahi hoga (baad ke dusre ERP ke liye)
+Upar jo likha hai bas wahi hoga. In cheezon ka is phase mein koi kaam nahi hoga:
+• Attendance (bachon ya teachers ki hazri)
+• Exams, result, report card, timetable
+• Parent / student / teacher ka alag login ya portal
+• Online payment (JazzCash, EasyPaisa, card, bank)
+• Asli SMS ya WhatsApp Business API (yahan sirf WhatsApp link khulega)
+• Transport, hostel, biometric, multi-branch
+• Asli backend, server aur database (baad mein chahein to kar lenge)
+Agar client in mein se kuch aur chahe to wo "Phase 2" mein dala ja sakta hai (dekhein Section 14).
+3. Users aur Roles
+Role
+Kaun
+Kya kar sakta hai
+Owner / Principal
+School ka malik ya principal
+Sab kuch (is phase mein sirf yahi ek role hai)
+Note: Demo mein ek hi role hai. Baad mein Accountant waghera role chahiye to Phase 2 mein add ho sakta hai.
+4. Pages ki Fehrist (Sitemap)
+Kul 20 screens hongi. App ka layout: left side Menu (sidebar), upar header (school ka naam, user ka naam, logout), uske neeche demo banner, phir page ka content. Mobile par sidebar hamburger menu ban jayegi.
+#
+Page
+Route
+Maqsad
+1
+Login
+/login
+Andar aana
+2
+Dashboard
+/
+Poora khulasa ek nazar mein
+3
+Students List
+/students
+Sab bachon ki list, search, filter
+4
+Student Add / Edit
+/students/new, /students/:id/edit
+Naya bacha ya tabdeeli
+5
+Student Profile
+/students/:id
+Ek bache ki poori detail aur fee history
+6
+Classes List
+/classes
+Montessori se 10th tak classes, har class mein kitne bache
+7
+Class Detail
+/classes/:id
+Us class ke bachon ki list
+8
+Fees Overview
+/fees
+Is mahine ki fee: aayi, baqi, vouchers ka button
+9
+Vouchers List
+/fees/vouchers
+Sab vouchers (paid / unpaid / partial)
+10
+Voucher Detail / Print
+/fees/vouchers/:id
+Ek voucher, print, maafi, late fee
+11
+Fee Collect + Receipt
+/fees/collect/:voucherId
+Fee wasool karna, receipt banana
+12
+Receipts List
+/fees/receipts
+Purani receipts, dobara print
+13
+Defaulters
+/fees/defaulters
+Kis ne fee nahi di, call / WhatsApp
+14
+Teachers List + Add/Edit
+/teachers, /teachers/new, /teachers/:id/edit
+Teacher ka record
+15
+Salary
+/salary
+Is mahine kis ko kitni, kis ko di, kis ko nahi
+16
+Salary Slip
+/salary/slip/:id
+Slip dekhna aur print
+17
+Expenses
+/expenses
+Kharche ki list aur naya kharcha
+18
+Expense Monthly Report
+/expenses/report
+Mahine ka kharcha, category wise
+19
+Stock
+/stock
+Library, uniform waghera ka stock
+20
+WhatsApp Reminders
+/whatsapp
+Fee reminder bhejna
+21
+Settings
+/settings
+Fee structure, late fee rule, template
+–
+404
+*
+Ghalat address
+(Student Add aur Edit ek hi form hai, Teacher List aur Add/Edit ko ek section ginein to kul 20 ke qareeb screens bantay hain.)
+5. Har Page ki Tafseel
+5.1 Login (/login)
+• Fields: Username, Email, Password.
+• "Password dikhao" ka chhota icon.
+• Demo credentials screen par chhoti line mein likhe hongay (jaise: username principal, email principal@school.com, password demo123).
+• Galat details par laal rang ka message: "Username, email ya password ghalat hai".
+• Kamyab login par Dashboard khulega aur header mein likha hoga: "Assalam o Alaikum, [User ka Naam]".
+• Bina login ke koi bhi dusra page nahi khulega, seedha Login par bhej dega.
+5.2 Dashboard (/)
+Upar cards:
+Card
+Kya dikhega
+Click karne par
+Kul Bache
+Total students
+/students
+Active
+Active bache
+/students?status=active
+Inactive
+Inactive bache
+/students?status=inactive
+Fee Aayi
+Is mahine ki wasool fee (Rs.)
+/fees
+Fee Baqi
+Is mahine ki baqi fee (Rs.)
+/fees/defaulters
+Salary Di
+Kitne teachers ko di
+/salary
+Salary Baqi
+Kitne teachers ko nahi di
+/salary
+Is Mahine ka Kharcha
+Total kharcha (Rs.)
+/expenses
+Neeche:
+• Class wise bachon ka chart (Montessori se 10th), bar chart.
+• Fee ka chart: aayi vs baqi (donut).
+• Taaza kaam: aakhri 5 receipts aur aakhri 5 kharche.
+• Mahine chunne ka dropdown (dummy data mein 3 mahine).
+5.3 Students List (/students)
+• Columns: Naam, Father ka Naam, Class, Phone, Family No., Status, Fee Status (Paid / Baqi), Actions.
+• Actions: Dekhein, Edit, Call (tel: link), WhatsApp (wa.me link).
+• Jis bache ki fee baqi ho, us ki row mein laal "Ghar Call Karein" button.
+• Search (naam, father ka naam, phone, family no.), filters (class, status, fee baqi).
+• Table ka export: CSV download (dummy).
+• Upar "+ Naya Bacha" button.
+5.4 Student Add / Edit
+Fields:
+Field
+Qism
+Zaroori?
+Bache ka Naam
+Text
+Haan
+Father ka Naam
+Text
+Haan
+Class
+Dropdown (Montessori, Class 1 se 10)
+Haan
+Phone / WhatsApp Number
+Text (03xx-xxxxxxx)
+Haan
+Family Number
+Text (behan bhai ek family number se jurte hain)
+Haan
+Admission ki Date
+Date
+Haan
+B-Form Number
+Text (13 digit, 12345-1234567-1)
+Haan
+Status
+Active / Inactive
+Haan
+Mahana Fee
+Number (class ki default fee yahan khud aa jati hai, badli ja sakti hai)
+Haan
+Validation: phone aur B-Form ka format check, family number khali na ho. Save par list par wapas jayega aur "Mehfooz ho gaya" message aayega.
+5.5 Student Profile (/students/:id)
+• Upar: naam, class, status, family number, B-Form.
+• Contact: phone, Call aur WhatsApp buttons.
+• Fee History: pichle mahinon ke vouchers (paid / baqi), "Fee Wasool Karein" button.
+• Family: isi family number ke baqi bache (behan bhai) ki chhoti list.
+5.6 Classes (/classes, /classes/:id)
+• Cards: Montessori, Class 1 … Class 10. Har card par bachon ki tadaad, active / inactive, mahana fee.
+• Card par click karne se us class ke bachon ki list (wahi Students List ka design, class pehle se filter).
+5.7 Fees Overview (/fees)
+• Is mahine ke 4 cards: Kul Fee, Wasool, Baqi, Defaulters ki tadaad.
+• Button: "Is Mahine ke Vouchers Banayein" (agar nahi bane hon). Ye khud sab active bachon ke voucher bana deta hai (Section 8.1).
+• Mahine ka dropdown.
+• Links: Vouchers, Receipts, Defaulters.
+5.8 Vouchers List (/fees/vouchers)
+• Columns: Voucher No., Bacha, Class, Mahina, Total, Late Fee, Maafi, Net, Status (Unpaid / Partial / Paid).
+• Filters: mahina, class, status. "Sab Print Karein" (class wise).
+• Family wise dekhne ka switch (ek family ke sab bache ek jagah).
+5.9 Voucher Detail / Print
+• School ka naam, bache ki detail, mahina, due date.
+• Fee ki tafseel: Tuition, (Annual / Admission fee agar ho), Late Fee, Maafi, Net Payable.
+• Buttons: Print, Maafi Dein, Fee Wasool Karein, WhatsApp Karein.
+• Maafi: raqam ya percentage, wajah likhna zaroori (jaise "yateem", "do bhai").
+5.10 Fee Collect + Receipt
+• Voucher ki raqam pehle se bhari hoti hai. Wasool ki raqam (poori ya kuch hissa), tareeqa (Cash / Bank), date.
+• Save par Receipt banti hai: Receipt No., bacha, mahina, wasool, baqi, date. Print button.
+• Agar kam raqam li to voucher "Partial" ho jata hai.
+5.11 Receipts List
+• Sab receipts, search (naam / receipt no.), date filter, dobara print.
+5.12 Defaulters (/fees/defaulters)
+• Un bachon ki list jinhon ne fee nahi di: Naam, Father, Class, Kitne mahine baqi, Kul baqi raqam, Phone.
+• Har row mein: Call, WhatsApp, Voucher Dekhein.
+• Upar "Sab ko WhatsApp Reminder" button (WhatsApp page par le jata hai).
+• Sort: sab se zyada baqi pehle.
+5.13 Teachers (/teachers)
+• Columns: Naam, Phone, Qualification, Subject / Class, Joining Date, Mahana Salary, Status.
+• Add / Edit form: naam, father ka naam, CNIC, phone, qualification, joining date, mahana salary, status.
+• Call aur WhatsApp buttons.
+5.14 Salary (/salary)
+• Mahine ka dropdown.
+• List: Teacher, Mahana Salary, Katoti (agar ho), Net, Status (Di gayi / Baqi).
+• "Salary Di Gayi" button se status badal jata hai (date aur tareeqa likhna hoga).
+• Upar summary: kul salary, di gayi, baqi.
+• Har row mein Salary Slip ka link.
+5.15 Salary Slip
+• School ka naam, teacher ki detail, mahina, basic salary, katoti, net, di gayi date. Print button.
+5.16 Expenses (/expenses)
+• Upar form (ya "+ Naya Kharcha" button): Date, Category, Kis ko diya, Raqam, Tafseel / Note.
+• Category: Bijli, Kiraya, Stationery, Pani / Gas, Marammat, Safai, Stock Khareed, Internet / Phone, Aur Kuch… Owner khud nayi category bhi bana sakta hai.
+• List mein search, mahine aur category ka filter, edit aur delete.
+• Upar is mahine ka total.
+5.17 Expense Monthly Report (/expenses/report)
+• Mahina chunein. Category wise total (table + pie chart), kis ko kitna diya (payee wise), kul kharcha.
+• Print aur CSV download.
+• Neeche chhota hisaab: Is mahine ki wasool fee – (salary + kharcha) = bachat. (Sirf maloomat ke liye.)
+5.18 Stock (/stock)
+• Tabs: Library, Uniform, Aur (owner nayi tab bana sakta hai).
+• Columns: Item ka naam, Kitna hai (quantity), Aakhri tabdeeli.
+• Buttons: "Naya Item", "Stock Barhao" (+), "Stock Ghatao" (–).
+• Kam stock (jaise 5 se kam) par peela nishan.
+• Khareed ka kharcha: stock barhate waqt "Kharche mein likhein" ka shortcut hoga jo Expenses ka form (category: Stock Khareed) bhar ke khol dega. Yani kharcha sirf Kharche wale section mein hi darj hoga, stock page par paisa nahi rakha jayega.
+5.19 WhatsApp Reminders (/whatsapp)
+• Baqi fee wale bachon ki list (checkbox ke saath). Sab chunna ya kuch chunna.
+• Message ka template (badla ja sakta hai):
+  "Assalam o Alaikum! {father_name} sahab, aap ke bache {student_name} (Class {class}) ki {month} ki fee Rs. {amount} baqi hai. Barae meharbani {due_date} tak jama karwa dein. Shukriya."
+• Har row mein "Bhejein" button jo https://wa.me/92…?text=… link khol deta hai (WhatsApp mein message pehle se likha hua aata hai, bhejna ek click ka kaam hai).
+• Kis ko bhej diya, uska nishan (dummy log).
+• Note: ye asli automatic bulk bhejna nahi hai, har message owner ke click se jata hai. Automatic bhejna Phase 2 mein (WhatsApp Business API).
+5.20 Settings (/settings)
+• School ki detail: naam, address, phone, logo (dummy).
+• Class wise Fee Structure: har class ki mahana fee.
+• Due date: har mahine ki kaun si tareekh (jaise 10).
+• Late Fee rule: ya to ek dafa fixed raqam (jaise Rs. 100), ya roz ka (jaise Rs. 10 per din).
+• WhatsApp template.
+• Dummy data reset ka button (demo ko dobara shuru karne ke liye).
+6. Pages ek dusre se kaise judte hain
+               ┌──────────┐
+               │  Login   │
+               └────┬─────┘
+                    ▼
+   ┌──────────── Dashboard ────────────┐
+   │   (cards par click se aage jaate) │
+   ▼        ▼         ▼        ▼       ▼
+Students  Fees    Salary   Expenses  Stock
+   │        │         │        │
+   │        ├─ Vouchers ─ Voucher Detail ─ Collect ─ Receipt
+   │        ├─ Receipts
+   │        └─ Defaulters ──► WhatsApp / Call
+   ├─ Student Add/Edit
+   ├─ Student Profile ─► Fee History ─► Voucher
+   └─ Classes ─► Class Detail ─► Student Profile
+
+Salary ─► Salary Slip        Teachers ─► Add/Edit
+Expenses ─► Monthly Report   Stock ─► (shortcut) Expenses form
+Settings ─► Fee Structure aur Late Fee rule ─► Vouchers ke hisaab par asar
+Connection table:
+Kahan se
+Kahan jata hai
+Kaise
+Login
+Dashboard
+Kamyab login
+Dashboard
+Students, Fees, Defaulters, Salary, Expenses
+Cards par click
+Students List
+Profile, Edit, Call, WhatsApp
+Row ke buttons
+Student Profile
+Voucher, Fee Collect
+Fee History se
+Classes
+Class Detail → Student Profile
+Card, phir row
+Fees Overview
+Vouchers, Receipts, Defaulters
+Links
+Vouchers
+Voucher Detail → Collect → Receipt
+Row, phir button
+Defaulters
+Call, WhatsApp, Voucher
+Row ke buttons
+Salary
+Salary Slip
+Row ka link
+Stock
+Expenses form (Stock Khareed)
+"Kharche mein likhein" shortcut
+Settings
+Fees (rules ka asar)
+Fee structure, late fee
+7. Zaroori User Flows
+Flow A – Mahine ki fee ka poora chakkar
+1.  Fees Overview → "Vouchers Banayein" → sab active bachon ke voucher ban jate hain.
+2.  Vouchers List → class wise print → bachon ko diye jate hain.
+3.  Bacha fee dene aaye → Voucher → "Fee Wasool Karein" → Receipt print.
+4.  Due date guzar jaye → baqi vouchers par late fee khud lag jati hai.
+5.  Defaulters list → Call / WhatsApp reminder.
+Flow B – Maafi Voucher Detail → "Maafi Dein" → raqam / percentage + wajah → Net payable kam ho jata hai → save.
+Flow C – Teacher ki salary Salary page → mahina chunein → "Salary Di Gayi" → date aur tareeqa → Slip print. Dashboard par "Salary Di / Baqi" khud badal jata hai.
+Flow D – Kharcha likhna Expenses → "+ Naya Kharcha" → date, category, kis ko diya, raqam → save → Dashboard ka "Is Mahine ka Kharcha" aur Monthly Report khud update.
+Flow E – Stock aur uska kharcha Stock → "Stock Barhao" → "Kharche mein likhein" → Expenses ka form bhara hua khulta hai → raqam daal kar save.
+Flow F – Naya bacha Students → "+ Naya Bacha" → form → save → class ki tadaad aur dashboard khud barh jate hain.
+8. Kaarobari Usool (Business Rules)
+8.1 Monthly Voucher
+• Har mahine ek button se (ya demo mein page khulne par) sab Active bachon ka voucher ban jata hai. Inactive bachon ka nahi.
+• Fee = bache ki mahana fee (jo class ki fee se aati hai).
+• Voucher number: V-YYYYMM-0001 jaisa.
+• Ek bache ka ek mahine ka ek hi voucher (dobara na bane).
+• Pichli baqi fee naye voucher mein "Arrears" ki line ban kar shamil hoti hai.
+8.2 Late Fee
+• Due date ke baad agar voucher Paid nahi to Settings ke rule ke mutabiq late fee lagti hai (fixed ya roz ke hisaab se).
+• Late fee ki ek hadd (maximum) Settings mein rakhi ja sakti hai.
+• Maafi ke zariye late fee bhi maaf ki ja sakti hai.
+8.3 Maafi
+• Raqam ya percentage, wajah zaroori. Receipt aur voucher par "Maafi" ki line nazar aati hai.
+8.4 Receipt
+• Har wasooli par ek receipt. Receipt No.: R-YYYYMM-0001. Partial payment par baqi raqam likhi aati hai.
+8.5 Defaulter
+• Jis bache ka koi voucher due date ke baad bhi Unpaid ya Partial ho.
+8.6 Salary
+• Har mahine har Active teacher ke liye ek salary entry (basic salary Teacher ke record se). Status: Baqi → Di gayi.
+8.7 Kharcha
+• Kharche ki category owner khud bana sakta hai. Dashboard aur Monthly Report in hi se hisaab lete hain.
+9. Data ki Shakal (Dummy Data Models)
+Sab data ek mockDb (browser ke andar) mein hoga. Demo ke liye data browser ke localStorage mein mehfooz hoga taake page refresh par add kiya hua data na jaye (Settings se reset ho sakta hai).
+Model
+Fields
+User
+id, name, username, email, password
+Class
+id, name, monthlyFee
+Student
+id, name, fatherName, classId, phone, familyNo, admissionDate, bForm, status, monthlyFee
+Voucher
+id, voucherNo, studentId, month (YYYY-MM), dueDate, tuition, arrears, lateFee, waiver, waiverReason, net, paid, status
+Receipt
+id, receiptNo, voucherId, studentId, amount, method, date
+Teacher
+id, name, fatherName, cnic, phone, qualification, joiningDate, salary, status
+SalaryRecord
+id, teacherId, month, basic, deduction, net, status, paidDate, method
+Expense
+id, date, categoryId, payee, amount, note
+ExpenseCategory
+id, name
+StockItem
+id, group (Library / Uniform / Aur), name, quantity, updatedAt
+Settings
+schoolName, address, phone, dueDay, lateFeeType, lateFeeAmount, lateFeeMax, whatsappTemplate
+ReminderLog
+id, studentId, month, sentAt
+Dummy data ki miqdar: 10 classes mein lagbhag 120 bache, 15 teachers, 3 mahine ke vouchers aur receipts, 30 kharche, 25 stock items, taake Dashboard aur charts bhare hue nazar aayein.
+10. API ki Fehrist (Mock APIs)
+Backend nahi hai, is liye ye sab frontend ke andar ke functions hain jo Promise wapas dete hain (asli API ki tarah, thori der ke delay ke saath). Naam REST jaise rakhe gaye hain taake baad mein asli server lagana asaan ho. Kul 46 APIs.
+#
+Module
+Method + Path
+Kaam
+1
+Auth
+POST /auth/login
+Login
+2
+Auth
+POST /auth/logout
+Logout
+3
+Auth
+GET /auth/me
+Maujooda user
+4
+Dashboard
+GET /dashboard/summary?month=
+Saare cards ka data
+5
+Dashboard
+GET /dashboard/class-counts
+Class wise bache
+6
+Dashboard
+GET /dashboard/recent
+Taaza receipts aur kharche
+7
+Classes
+GET /classes
+Classes aur tadaad
+8
+Classes
+GET /classes/:id
+Ek class
+9
+Classes
+PUT /classes/:id
+Class ki fee badalna
+10
+Students
+GET /students?search&classId&status&feeStatus
+List
+11
+Students
+GET /students/:id
+Profile
+12
+Students
+POST /students
+Naya bacha
+13
+Students
+PUT /students/:id
+Tabdeeli
+14
+Students
+GET /students/family/:familyNo
+Family ke bache
+15
+Fees
+GET /fees/summary?month=
+Kul, wasool, baqi
+16
+Fees
+POST /fees/vouchers/generate
+Mahine ke vouchers banana
+17
+Fees
+GET /fees/vouchers?month&classId&status
+Vouchers ki list
+18
+Fees
+GET /fees/vouchers/:id
+Ek voucher
+19
+Fees
+POST /fees/vouchers/:id/waiver
+Maafi
+20
+Fees
+POST /fees/vouchers/apply-late-fee
+Late fee lagana
+21
+Fees
+POST /fees/vouchers/:id/collect
+Fee wasool + receipt
+22
+Fees
+GET /fees/receipts?search&date
+Receipts
+23
+Fees
+GET /fees/receipts/:id
+Ek receipt
+24
+Fees
+GET /fees/defaulters
+Defaulters list
+25
+Teachers
+GET /teachers
+List
+26
+Teachers
+GET /teachers/:id
+Ek teacher
+27
+Teachers
+POST /teachers
+Naya teacher
+28
+Teachers
+PUT /teachers/:id
+Tabdeeli
+29
+Salary
+GET /salary?month=
+Mahine ki salary list
+30
+Salary
+POST /salary/generate
+Mahine ki entries banana
+31
+Salary
+POST /salary/:id/pay
+Salary di gayi
+32
+Salary
+GET /salary/:id/slip
+Salary slip
+33
+Expenses
+GET /expenses?month&categoryId&search
+List
+34
+Expenses
+POST /expenses
+Naya kharcha
+35
+Expenses
+PUT /expenses/:id
+Tabdeeli
+36
+Expenses
+DELETE /expenses/:id
+Hatana
+37
+Expenses
+GET /expenses/categories
+Categories
+38
+Expenses
+POST /expenses/categories
+Nayi category
+39
+Expenses
+GET /expenses/report?month=
+Monthly report
+40
+Stock
+GET /stock?group=
+Stock ki list
+41
+Stock
+POST /stock
+Naya item
+42
+Stock
+POST /stock/:id/adjust
+Barhao ya ghatao
+43
+WhatsApp
+GET /whatsapp/pending
+Baqi fee walon ki list
+44
+WhatsApp
+POST /whatsapp/log
+Bhejne ka record
+45
+Settings
+GET /settings / PUT /settings
+Settings
+46
+Settings
+POST /settings/reset-demo
+Dummy data dobara bharna
+11. TRD – Technical Design
+11.1 Technology (taveez)
+Hissa
+Choice
+Wajah
+Framework
+React + Vite
+Tez, asaan, bohat common
+Language
+JavaScript (ya TypeScript)
+–
+Routing
+React Router
+Pages ke raste
+Styling
+Tailwind CSS
+Jaldi aur saaf design, mobile friendly
+State
+React Context + hooks
+Chhote project ke liye kaafi
+Charts
+Recharts
+Bar aur donut charts
+Dates
+date-fns
+Tareekhon ka hisaab
+Data
+mockApi + localStorage
+Backend ke baghair data mehfooz
+Print
+Browser ka print + print CSS
+Voucher, receipt, slip
+Export
+CSV (browser se)
+Reports
+Hosting: koi bhi static hosting (Vercel, Netlify waghera). Server ki zaroorat nahi.
+11.2 Folder Structure
+src/
+  api/            # mock APIs (auth.js, students.js, fees.js, ...)
+  data/           # seed (dummy) data aur mockDb.js
+  components/     # Banner, Sidebar, Header, Table, Modal, Card, Chart...
+  pages/          # Login, Dashboard, Students, Classes, Fees, Teachers,
+                  # Salary, Expenses, Stock, Whatsapp, Settings
+  context/        # AuthContext, SettingsContext
+  utils/          # money, dates, phone, bform, print, csv
+  routes.jsx      # route list aur login guard
+  App.jsx
+11.3 Mock API ka usool
+• Har function async hai, 300–600ms ka nakli delay, taake loading spinner nazar aaye.
+• Data mockDb se parha aur likha jata hai; mockDb apni halat localStorage mein rakhta hai.
+• Galti ki soorat mein asli API jaisa error wapas ({ status, message }).
+• Baad mein asli backend lagane ke liye: sirf src/api/ ke andar ke functions badalne honge (mockDb ki jagah fetch / axios). Pages aur components ko haath nahi lagana parega.
+11.4 Zaroori Technical Baatein
+• Login guard: bina login ke har route par /login. Login ki halat localStorage mein (demo token).
+• Phone: 03xx-xxxxxxx ko 923xxxxxxxxx mein badal kar wa.me link banti hai; Call ke liye tel: link.
+• B-Form validation: 13 digit, format xxxxx-xxxxxxx-x.
+• Paisa: hamesha poore Rupay (integer) mein, dikhane ke waqt Rs. 1,500 jaisa format.
+• Print: Voucher, Receipt, Salary Slip, Monthly Report ke liye alag print CSS (sidebar aur banner print mein nahi aate).
+• Responsive: mobile par table kaarden (cards) ban jati hain, sidebar hamburger.
+• Zuban: screen par zyada tar Roman Urdu labels; baad mein Urdu script ka option rakha ja sakta hai.
+• Security note: demo mein password code ke andar hai, ye sirf dikhane ke liye hai. Asli system mein password server par hash ho kar rakhe jayenge.
+11.5 Non-Functional Zarooratein
+Cheez
+Matlab
+Speed
+Har page 2 second ke andar khule
+Browser
+Chrome, Edge, Firefox, Safari ke naye versions
+Device
+Computer, tablet, mobile
+Data ki hadd
+Demo mein ~500 bache tak theek chale
+Accessibility
+Saaf bara text, rang ke saath saath likha hua status (sirf rang par nirbhar nahi)
+12. Kaam ki Tarteeb (Build Plan)
+Marhala
+Kaam
+1
+Project setup, layout, sidebar, header, demo banner, Login aur guard
+2
+Dummy data aur mock APIs (sab 46)
+3
+Students aur Classes
+4
+Fees: vouchers, late fee, maafi, collect, receipt, defaulters
+5
+Teachers aur Salary, slip
+6
+Expenses aur report, Stock
+7
+Dashboard, WhatsApp, Settings
+8
+Print styles, mobile check, polish, demo ki jaanch
+13. Kamyabi ki Shartein (Acceptance)
+• Login ke baad upar user ka naam nazar aaye.
+• Dashboard par saare 8 cards sahi hisaab dikhayein aur click par sahi page khule.
+• Montessori se 10th tak ki sab classes aur har class ke bache nazar aayein.
+• Naya bacha add karne par class aur dashboard ki tadaad khud barhe.
+• Ek click se mahine ke vouchers ban jayein; late fee aur maafi sahi hisaab se lagein.
+• Fee wasool karne par receipt bane aur print ho.
+• Defaulters ki list sahi ho aur Call / WhatsApp buttons chalein.
+• Salary "Di gayi / Baqi" badle aur Dashboard par asar aaye; slip print ho.
+• Kharcha add karne par monthly report aur dashboard update ho.
+• Stock ki ginti barh / ghat sake aur khareed ka kharcha Kharche mein likha ja sake.
+• Har page par Roman Urdu wala demo banner nazar aaye.
+14. Phase 2 (Baad mein, agar chahein)
+• Asli backend aur database, asli login (password hash ke saath)
+• WhatsApp Business API se khud bulk reminders
+• Alag roles (Accountant, Teacher)
+• Attendance, exams, results, timetable (dusra ERP)
+• Online fee payment
+• Urdu script (نستعلیق) ka option, data ka backup aur export
+15. Mere Andaze (aap se tasdeeq chahiye)
+Mainey kuch baatein apni taraf se maani hain. Ghalat hon to bata dein, document badal dunga:
+1.  Classes: Montessori, phir Class 1 se Class 10. Agar Prep / KG / Nursery bhi chahiye to bata dein.
+2.  Login: sirf ek role (Owner / Principal).
+3.  Settings page ko chhote hissay ke taur par shamil kiya hai, kyunke late fee aur class wise fee ke baghair voucher nahi ban sakta.
+4.  Backend / database: is phase mein bilkul nahi. Data sirf browser ke andar dummy hai.
+5.  WhatsApp: har message owner ke click se jayega (wa.me link), khud bakhud bulk nahi.
+6.  Phone numbers: sab bachon ke numbers save honge aur kisi ko bhi Call ya WhatsApp kiya ja sakta hai (fee ke ilawa bhi, jaise tabiyat poochni ho).
+7.  "Ye nahi hoga" wala hissa: aap ki dictation ka ye hissa mujhe poori tarah wazeh nahi tha. Maine usay aise samjha ke jo kuch upar likha hai bas wahi hoga, aur baqi sab (attendance, exams waghera) baad ke ERP mein. Agar aap ka matlab kuch aur tha to bata dein.
+8.  Banner ka matn mainey aap ki baat se likha hai; alfaaz badalne hon to bata dein.
+Agle qadam: aap "haan" kahein ya tabdeeli bata dein. Uske baad document final karke code ka kaam shuru kar sakte hain.

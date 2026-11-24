@@ -1,0 +1,6 @@
+{
+  "name": "School ERP — School Management System",
+  "description": "Comprehensive School Management System for school principals and owners: students, classes, fee vouchers, receipts, defaulters, teachers, salaries, expenses, stock inventory, and WhatsApp reminders.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
